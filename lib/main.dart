@@ -1,4 +1,4 @@
-
+import './weather_screen.dart';
 import './my_location.dart';
 import 'package:flutter/material.dart';
 import './network.dart';
@@ -16,17 +16,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Weather App',
-      home: WeatherScreen(),
+      home: Loding(),
     );
   }
 }
 
-class WeatherScreen extends StatefulWidget {
+class Loding extends StatefulWidget {
   @override
-  _WeatherScreenState createState() => _WeatherScreenState();
+  _LodingState createState() => _LodingState();
 }
 
-class _WeatherScreenState extends State<WeatherScreen> {
+class _LodingState extends State<Loding> {
 
   late double latitude3;
   late double longitude3;
@@ -43,10 +43,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
     latitude3 = myLocation.latitude2;
     longitude3 = myLocation.longitude2;
 
-    Network network = Network('https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey');
+    Network network = Network('https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric');
 
     var weatherData = await network.getJsonData();
     print(weatherData);
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return WeatherScreen(parseWeatherData: weatherData,);
+    }));
   }
 
   // void fetchData() async {
@@ -71,7 +74,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: null,
-          child: Text('Get Location'),
+          child: Text('Loding'),
         ),
       ),
     );
