@@ -70,7 +70,7 @@ class Model {
       return Text(
         '"매우좋음"',
         style: TextStyle(
-          color: Colors.indigo,
+          color: Colors.white,
           fontWeight:  FontWeight.bold,
         ),
       );
@@ -78,7 +78,7 @@ class Model {
       return Text(
         '"좋음"',
         style: TextStyle(
-          color: Colors.indigo,
+          color: Colors.white,
           fontWeight:  FontWeight.bold,
         ),
       );
@@ -86,7 +86,7 @@ class Model {
       return Text(
         '"보통"',
         style: TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontWeight:  FontWeight.bold,
         ),
       );
@@ -94,7 +94,7 @@ class Model {
       return Text(
         '"나쁨"',
         style: TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontWeight:  FontWeight.bold,
         ),
       );
@@ -102,7 +102,7 @@ class Model {
       return Text(
         '"매우나쁨"',
         style: TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontWeight:  FontWeight.bold,
         ),
       );

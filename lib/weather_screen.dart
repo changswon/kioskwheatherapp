@@ -4,11 +4,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart'; // 날짜 및 시간
 import './model/model.dart';
+import 'my_location.dart';
+import './weeklyweather/weeklyweather.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData, this.parseAirPollution}); //생성자
+  WeatherScreen({this.parseWeatherData, this.parseAirPollution, required this.city, required this.subLocality}); //생성자
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
+  final String city; // 추가: 도시 정보
+  final String subLocality; // 추가: 구군 정보
+
 
 
   @override
@@ -27,24 +32,30 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late double dust2;
   var date = DateTime.now(); // 서버의 날짜를 가져오는 변수
 
+
+
   @override
   void initState() {
     super.initState();
-    updateData(widget.parseWeatherData, widget.parseAirPollution);
+    updateData(widget.parseWeatherData, widget.parseAirPollution, widget.city, widget.subLocality);
   }
 
-  void updateData(dynamic weatherData, dynamic airData) {
-    double temp2 = weatherData['main']['temp'].toDouble(); //날씨 api 파라미터
-    int condition = weatherData['weather'][0]['id']; //날씨 api 파라미터
-    int index = airData['list'][0]['main']['aqi']; // 대기질 지수 api 파라미터
-    des = weatherData['weather'][0]['description']; // 대기질 지수 api 파라미터
-    dust1 = airData['list'][0]['components']['pm10']; // 미세먼지 지수
-    dust2 = airData['list'][0]['components']['pm2_5']; //초미세먼지 지수
+  void updateData(dynamic weatherData, dynamic airData, String city, String subLocality) {
+    dynamic tempValue = weatherData['main']['temp'];
+    double temp2 = tempValue is int ? tempValue.toDouble() : tempValue;
+
+    int condition = weatherData['weather'][0]['id'];
+    int index = airData['list'][0]['main']['aqi'];
+    des = weatherData['weather'][0]['description'];
+    dust1 = airData['list'][0]['components']['pm10'];
+    dust2 = airData['list'][0]['components']['pm2_5'];
     temp = temp2.round();
-    cityName = weatherData['name'];
     icon = model.getWeatherIcon(condition);
     airIcon = model.getAirIcon(index);
     airState = model.getAirCondition(index);
+    setState(() {
+      cityName = '$city - $subLocality';
+    });
 
     print(temp);
     print(cityName);
@@ -67,12 +78,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
         leading: IconButton(
           icon: Icon(Icons.near_me),
           color: Colors.white,
-          onPressed: (){},
+          onPressed: () async {
+            MyLocation myLocation = MyLocation();
+            await myLocation.getMyCurrentLocation();
+            setState(() {
+              cityName = '${myLocation.city} - ${myLocation.subLocality}';
+            });
+          },
           iconSize: 30.0,
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.location_searching),
+            icon: Icon(Icons.person),
             color: Colors.white,
             onPressed: (){},
             iconSize: 30.0,
@@ -104,6 +121,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             SizedBox(
                               height: 150.0,
                             ),
+
                             Text(
                               '$cityName',
                               style: GoogleFonts.lato(
@@ -158,7 +176,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            GestureDetector(
+                              onTap: () async{
+                                MyLocation myLocation = MyLocation();
+                                await myLocation.getMyCurrentLocation();
+                                String tempAsString = myLocation.getMyCurrentLocation().toString();
+
+                                // 버튼이나 터치 이벤트 발생 시 다음 페이지로 이동
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => NextPage(tempAsString)),
+                                );
+                              },
+                            child: Text(
                               '$temp\u2103',
                               style: GoogleFonts.lato(
                                   fontSize: 85.0,
@@ -172,6 +202,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   ),
                                 ],
                               ),
+                            ),
                             ),
                             Row(
                               children: [

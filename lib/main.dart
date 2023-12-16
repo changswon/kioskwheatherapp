@@ -8,6 +8,7 @@ import './network.dart';
 const apikey = 'cd899380ae758ffe95104a6e816f2360';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -30,6 +31,8 @@ class _LodingState extends State<Loding> {
 
   late double latitude3;
   late double longitude3;
+  late String city;
+  late String subLocality;
 
   @override
   void initState() {
@@ -42,6 +45,8 @@ class _LodingState extends State<Loding> {
     await myLocation.getMyCurrentLocation();
     latitude3 = myLocation.latitude2;
     longitude3 = myLocation.longitude2;
+    city = myLocation.city;
+    subLocality = myLocation.subLocality;
 
     Network network = Network('https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
     'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey');
@@ -53,7 +58,7 @@ class _LodingState extends State<Loding> {
     print(airData);
 
     Navigator.push(context, MaterialPageRoute(builder: (context){
-      return WeatherScreen(parseWeatherData: weatherData, parseAirPollution: airData,);
+      return WeatherScreen(parseWeatherData: weatherData, parseAirPollution: airData, city: city, subLocality: subLocality);
     }));
   }
   @override
