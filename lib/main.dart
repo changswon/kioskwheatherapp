@@ -49,7 +49,8 @@ class _LodingState extends State<Loding> {
     subLocality = myLocation.subLocality;
 
     Network network = Network('https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
-    'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey');
+    'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey',
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric');
 
     var weatherData = await network.getJsonData();
     print(weatherData);
@@ -57,8 +58,11 @@ class _LodingState extends State<Loding> {
     var airData = await network.getAirData();
     print(airData);
 
+    var weekData = await network.getWeekData();
+    print(weekData);
+
     Navigator.push(context, MaterialPageRoute(builder: (context){
-      return WeatherScreen(parseWeatherData: weatherData, parseAirPollution: airData, city: city, subLocality: subLocality);
+      return WeatherScreen(parseWeatherData: weatherData, parseAirPollution: airData, parseWeekData: weekData, city: city, subLocality: subLocality);
     }));
   }
   @override

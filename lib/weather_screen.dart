@@ -8,9 +8,10 @@ import 'my_location.dart';
 import './weeklyweather/weeklyweather.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData, this.parseAirPollution, required this.city, required this.subLocality}); //생성자
+  WeatherScreen({this.parseWeatherData, this.parseAirPollution, this.parseWeekData, required this.city, required this.subLocality}); //생성자
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
+  final dynamic parseWeekData;
   final String city; // 추가: 도시 정보
   final String subLocality; // 추가: 구군 정보
 
@@ -31,16 +32,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late double dust1;
   late double dust2;
   var date = DateTime.now(); // 서버의 날짜를 가져오는 변수
+  List<double> temperatures = [];
 
 
 
   @override
   void initState() {
     super.initState();
-    updateData(widget.parseWeatherData, widget.parseAirPollution, widget.city, widget.subLocality);
+    updateData(widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.city, widget.subLocality);
   }
 
-  void updateData(dynamic weatherData, dynamic airData, String city, String subLocality) {
+  void updateData(dynamic weatherData, dynamic airData, dynamic weekData, String city, String subLocality) {
     dynamic tempValue = weatherData['main']['temp'];
     double temp2 = tempValue is int ? tempValue.toDouble() : tempValue;
 
@@ -57,6 +59,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
       cityName = '$city - $subLocality';
     });
 
+    if (weekData != null && weekData is Map && weekData['list'] != null && weekData['list'] is List) {
+      temperatures = (weekData['list'] as List<dynamic>)
+          .map<double>((item) => (item['main']['temp'] as num).toDouble())
+          .toList();
+
+      // Print temperatures to the console
+      print('5일간의 온도: $temperatures');
+    } else {
+      temperatures = []; // If weekData is null or in an unexpected format, initialize temperatures as an empty list
+    }
+
+    print('Week Data: $weekData');
+    print(temperatures);
     print(temp);
     print(cityName);
   }
@@ -185,7 +200,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 // 버튼이나 터치 이벤트 발생 시 다음 페이지로 이동
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => NextPage(tempAsString)),
+                                  MaterialPageRoute(builder: (context) => NextPage(temperatures)),
                                 );
                               },
                             child: Text(
