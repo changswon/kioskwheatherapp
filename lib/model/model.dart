@@ -14,14 +14,19 @@ class Model {
         'svg/climacon-cloud_rain.svg',
         color: Colors.white,
       );
-    } else if (condition < 600) {
+    } else if (condition <= 600) {
       return SvgPicture.asset(
         'svg/climacon-cloud_snow_alt.svg',
         color: Colors.white,
       );
-    } else if (condition == 900) {
+    } else if (condition == 800) {
       return SvgPicture.asset(
         'svg/climacon-sun.svg',
+        color: Colors.white,
+      );
+    } else if (condition == 801) {
+      return SvgPicture.asset(
+        'svg/cloud.svg',
         color: Colors.white,
       );
     } else if (condition <= 804) {

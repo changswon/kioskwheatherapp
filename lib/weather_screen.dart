@@ -8,9 +8,10 @@ import 'my_location.dart';
 import './weeklyweather/weeklyweather.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData, this.parseAirPollution, required this.city, required this.subLocality}); //생성자
+  WeatherScreen({this.parseWeatherData, this.parseAirPollution, this.parseWeekData, required this.city, required this.subLocality}); //생성자
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
+  final dynamic parseWeekData;
   final String city; // 추가: 도시 정보
   final String subLocality; // 추가: 구군 정보
 
@@ -31,20 +32,28 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late double dust1;
   late double dust2;
   var date = DateTime.now(); // 서버의 날짜를 가져오는 변수
+  List<double> temperatures = [];
+  late int condition;
 
-
+  void navigateToWeeklyWeather() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WeeklyWeatherPage(parseWeekData: widget.parseWeekData),
+      ),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    updateData(widget.parseWeatherData, widget.parseAirPollution, widget.city, widget.subLocality);
+    updateData(widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.city, widget.subLocality);
   }
 
-  void updateData(dynamic weatherData, dynamic airData, String city, String subLocality) {
+  void updateData(dynamic weatherData, dynamic airData, dynamic weekData, String city, String subLocality) {
     dynamic tempValue = weatherData['main']['temp'];
     double temp2 = tempValue is int ? tempValue.toDouble() : tempValue;
-
-    int condition = weatherData['weather'][0]['id'];
+    condition = weatherData['weather'][0]['id'];
     int index = airData['list'][0]['main']['aqi'];
     des = weatherData['weather'][0]['description'];
     dust1 = airData['list'][0]['components']['pm10'];
@@ -57,8 +66,29 @@ class _WeatherScreenState extends State<WeatherScreen> {
       cityName = '$city - $subLocality';
     });
 
-    print(temp);
-    print(cityName);
+    int conditionValue = weatherData['weather'][0]['id'];
+    setState(() {
+      condition = conditionValue;
+    });
+
+
+    if (weekData != null && weekData is Map && weekData['list'] != null && weekData['list'] is List) {
+      temperatures = (weekData['list'] as List<dynamic>)
+          .map<int>((item) => (item['main']['temp'] as num).round())
+          .map<double>((temp) => temp.toDouble())
+          .toList();
+
+      // Print temperatures to the console
+      print('온도: $temperatures');
+    } else {
+      temperatures = []; // If weekData is null or in an unexpected format, initialize temperatures as an empty list
+      print('Week Data is null or has an unexpected format: $weekData');
+    }
+
+    //print('Week Data: $weekData');
+    //print(temperatures);
+    //print(temp);
+    //print(cityName);
   }
 
   String getSystemTime() {
@@ -142,7 +172,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 TimerBuilder.periodic(
                                   (Duration(minutes: 1)),
                                   builder:(context){
-                                    print('${getSystemTime()}',);
+                                    //print('${getSystemTime()}',); //로그에 시간 현재시간 출력
                                     return Text(
                                       '${getSystemTime()}',
                                       style: GoogleFonts.lato(
@@ -181,12 +211,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 MyLocation myLocation = MyLocation();
                                 await myLocation.getMyCurrentLocation();
                                 String tempAsString = myLocation.getMyCurrentLocation().toString();
-
-                                // 버튼이나 터치 이벤트 발생 시 다음 페이지로 이동
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => NextPage(tempAsString)),
-                                );
+                                navigateToWeeklyWeather();
                               },
                             child: Text(
                               '$temp\u2103',
