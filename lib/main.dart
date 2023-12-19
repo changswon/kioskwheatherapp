@@ -3,7 +3,7 @@ import './my_location.dart';
 import 'package:flutter/material.dart';
 import './network.dart';
 
-const apikey = 'cd899380ae758ffe95104a6e816f2360';
+const apikey = 'cd899380ae758ffe95104a6e816f2360'; //openweather api key
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
