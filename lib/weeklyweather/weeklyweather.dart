@@ -52,7 +52,7 @@ class WeeklyWeatherPage extends StatelessWidget {
                     var date = DateTime.fromMillisecondsSinceEpoch(
                         dayData['dt'] * 1000);
                     var condition = dayData['weather'][0]['id'];
-                    var temperature = dayData['main']['temp'];
+                    var temperature = dayData['main']['temp'].toStringAsFixed(1);
                     return Card(
                       color: Colors.transparent,
                       child: ListTile(

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart'; // 날짜 및 시간
 import './model/model.dart';
+import './calendar/calendar.dart';
 import 'my_location.dart';
 import './weeklyweather/weeklyweather.dart';
 
@@ -35,6 +36,46 @@ class _WeatherScreenState extends State<WeatherScreen> {
   List<double> temperatures = [];
   late int condition;
 
+  double getMaxTemperature() {
+    if (temperatures.isNotEmpty) {
+      return temperatures.reduce((max, temp) => temp > max ? temp : max).toDouble();
+    }
+    return 0.0; // 온도 목록이 비어 있을 때 기본값
+  }
+
+  double getMinTemperature() {
+    if (temperatures.isNotEmpty) {
+      return temperatures.reduce((min, temp) => temp < min ? temp : min).toDouble();
+    }
+    return 0.0; // 온도 목록이 비어 있을 때 기본값
+  }
+
+  Widget? outerwearIcon;
+  Widget? topsIcon;
+  Widget? bottomsIcon;
+  Widget? shoesIcon;
+  Widget? accessoriesIcon;
+
+  final int outerwearThreshold = 5;
+  final int topsThreshold = 5;
+  final int bottomsThreshold = 5;
+  final int shoesThreshold = 5;
+  final int accessoriesThreshold = 5;
+
+  void updateClothingIcons(int temperature) {
+    if (temperature <= outerwearThreshold) {
+      outerwearIcon = Icon(Icons.ac_unit); // 실제 외투 아이콘으로 교체
+    } else if (temperature <= topsThreshold) {
+      topsIcon = Icon(Icons.wb_cloudy); // 실제 상의 아이콘으로 교체
+    } else if (temperature <= bottomsThreshold) {
+      bottomsIcon = Icon(Icons.wb_sunny); // 실제 하의 아이콘으로 교체
+    } else if (temperature <= shoesThreshold) {
+      shoesIcon = Icon(Icons.directions_run); // 실제 신발 아이콘으로 교체
+    } else {
+      accessoriesIcon = Icon(Icons.star); // 실제 악세사리 아이콘으로 교체
+    }
+  }
+
   void navigateToWeeklyWeather() {
     Navigator.push(
       context,
@@ -48,6 +89,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   void initState() {
     super.initState();
     updateData(widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.city, widget.subLocality);
+    updateClothingIcons(temp);
   }
 
   void updateData(dynamic weatherData, dynamic airData, dynamic weekData, String city, String subLocality) {
@@ -121,7 +163,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
           IconButton(
             icon: Icon(Icons.person),
             color: Colors.white,
-            onPressed: (){},
+            onPressed: (){Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CalendarWeather()),
+            );
+            },
             iconSize: 30.0,
           )
         ],
@@ -203,6 +249,46 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             ),
                           ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Text('외투'),
+                                SizedBox(height: 10.0),
+                                outerwearIcon ?? SizedBox(),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text('상의'),
+                                SizedBox(height: 10.0),
+                                topsIcon ?? SizedBox(),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text('하의'),
+                                SizedBox(height: 10.0),
+                                bottomsIcon ?? SizedBox(),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text('신발'),
+                                SizedBox(height: 10.0),
+                                shoesIcon ?? SizedBox(),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text('악세사리'),
+                                SizedBox(height: 10.0),
+                                accessoriesIcon ?? SizedBox(),
+                              ],
+                            ),
+                          ],
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -213,21 +299,64 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 String tempAsString = myLocation.getMyCurrentLocation().toString();
                                 navigateToWeeklyWeather();
                               },
-                            child: Text(
-                              '$temp\u2103',
-                              style: GoogleFonts.lato(
-                                  fontSize: 85.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black54,
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 3.0,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start, // 현재 온도와 최고/최저 온도를 맞추기 위해 수정
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                                    textBaseline: TextBaseline.alphabetic, // textBaseline 설정// 현재 온도와 최고/최저 온도를 맞추기 위해 수정
+                                    children: [
+                                      Text(
+                                        '$temp\u2103',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 85.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black54,
+                                              offset: Offset(1.0, 1.0),
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Text(
+                                        ' 최고: ',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16.0, // 작게 설정
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${getMaxTemperature()}\u2103',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16.0, // 작게 설정
+                                          color: Colors.red, // 빨강색으로 설정
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        ' / 최저: ',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16.0, // 작게 설정
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${getMinTemperature()}\u2103',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16.0, // 작게 설정
+                                          color: Colors.blue, // 파랑색으로 설정
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ),
                             ),
                             Row(
                               children: [
