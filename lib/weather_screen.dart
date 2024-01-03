@@ -161,7 +161,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 children: [
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Column(
@@ -223,6 +222,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 20.0),
                         Column(
                           children: [
                             GestureDetector(
@@ -232,6 +232,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 String tempAsString = myLocation.getMyCurrentLocation().toString();
                                 navigateToWeeklyWeather();
                               },
+
                               child: Column(
                                 children: [
                                   // des 위젯
@@ -288,6 +289,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           fontSize: 12.0,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black54,
+                                              offset: Offset(1.0, 1.0),
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Text(
@@ -296,22 +304,43 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           fontSize: 12.0,
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black54,
+                                              offset: Offset(1.0, 1.0),
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Text(
-                                        ' / 최저: ',
+                                        ' | 최저: ',
                                         style: GoogleFonts.lato(
                                           fontSize: 12.0,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black54,
+                                              offset: Offset(1.0, 1.0),
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Text(
                                         '${getMinTemperature()}\u2103',
                                         style: GoogleFonts.lato(
                                           fontSize: 12.0,
-                                          color: Colors.blue,
+                                          color: Colors.cyanAccent,
                                           fontWeight: FontWeight.bold,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black54,
+                                              offset: Offset(1.0, 1.0),
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
