@@ -78,7 +78,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     airIcon = model.getAirIcon(index);
     airState = model.getAirCondition(index);
     setState(() {
-      cityName = '$administrativeArea - $subLocality';
+      cityName = '$administrativeArea  $subLocality';
     });
 
     int conditionValue = weatherData['weather'][0]['id'];
@@ -162,13 +162,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 150.0,
+                              height: 60.0,
                             ),
 
                             Text(
@@ -187,6 +187,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               ),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 TimerBuilder.periodic(
                                   (Duration(minutes: 1)),
@@ -223,7 +224,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           ],
                         ),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
                               onTap: () async{
@@ -233,75 +233,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 navigateToWeeklyWeather();
                               },
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start, // 현재 온도와 최고/최저 온도를 맞추기 위해 수정
                                 children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                                    textBaseline: TextBaseline.alphabetic, // textBaseline 설정// 현재 온도와 최고/최저 온도를 맞추기 위해 수정
-                                    children: [
-                                      Text(
-                                        '$temp\u2103',
-                                        style: GoogleFonts.lato(
-                                          fontSize: 85.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          shadows: [
-                                            Shadow(
-                                              color: Colors.black54,
-                                              offset: Offset(1.0, 1.0),
-                                              blurRadius: 3.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Text(
-                                        ' 최고: ',
-                                        style: GoogleFonts.lato(
-                                          fontSize: 16.0, // 작게 설정
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${getMaxTemperature()}\u2103',
-                                        style: GoogleFonts.lato(
-                                          fontSize: 16.0, // 작게 설정
-                                          color: Colors.red, // 빨강색으로 설정
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        ' / 최저: ',
-                                        style: GoogleFonts.lato(
-                                          fontSize: 16.0, // 작게 설정
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${getMinTemperature()}\u2103',
-                                        style: GoogleFonts.lato(
-                                          fontSize: 16.0, // 작게 설정
-                                          color: Colors.blue, // 파랑색으로 설정
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                icon!,
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Text('$des',
+                                  // des 위젯
+                                  Text('$des',
                                     style: GoogleFonts.lato(
-                                        fontSize: 16.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                       shadows: [
                                         Shadow(
                                           color: Colors.black54,
@@ -309,10 +247,78 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           blurRadius: 3.0,
                                         ),
                                       ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
+                                  SizedBox(height: 10.0),  // des와 icon 사이의 간격
+
+                                  // icon 위젯
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      icon!,
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.0),  // icon과 온도 사이의 간격
+
+                                  // 온도 위젯
+                                  Text(
+                                    '$temp\u2103',
+                                    style: GoogleFonts.lato(
+                                      fontSize: 60.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black54,
+                                          offset: Offset(1.0, 1.0),
+                                          blurRadius: 3.0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.0),  // 온도와 최고/최저 온도 사이의 간격
+
+                                  // 최고/최저 온도 위젯
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '최고: ',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 12.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${getMaxTemperature()}\u2103',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 12.0,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        ' / 최저: ',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 12.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${getMinTemperature()}\u2103',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 12.0,
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ),
                           ],
                         )
                       ],
