@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Model {
   Widget? getWeatherIcon(int condition) {
@@ -73,42 +74,81 @@ class Model {
   Widget? getAirCondition(int index){
     if(index == 1){
       return Text(
-        '"매우좋음"',
-        style: TextStyle(
+        '매우좋음',
+        style: GoogleFonts.lato(
+          fontSize: 12,
           color: Colors.white,
           fontWeight:  FontWeight.bold,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 3.0,
+            ),
+          ],
         ),
       );
     } else if (index == 2){
-      return Text(
-        '"좋음"',
-        style: TextStyle(
+      return Text('좋음',
+          style: GoogleFonts.lato(
+          fontSize: 12,
           color: Colors.white,
           fontWeight:  FontWeight.bold,
+            shadows: [
+              Shadow(
+                color: Colors.black54,
+                offset: Offset(2.0, 2.0),
+                blurRadius: 3.0,
+              ),
+            ],
         ),
       );
     } else if (index == 3){
       return Text(
-        '"보통"',
-        style: TextStyle(
+        '보통',
+        style: GoogleFonts.lato(
+          fontSize: 12,
           color: Colors.white,
           fontWeight:  FontWeight.bold,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 3.0,
+            ),
+          ],
         ),
       );
     } else if (index == 4){
       return Text(
-        '"나쁨"',
-        style: TextStyle(
+        '나쁨',
+        style: GoogleFonts.lato(
+          fontSize: 12,
           color: Colors.white,
           fontWeight:  FontWeight.bold,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 3.0,
+            ),
+          ],
         ),
       );
     }else if (index == 5){
       return Text(
-        '"매우나쁨"',
-        style: TextStyle(
+        '매우나쁨',
+        style: GoogleFonts.lato(
+          fontSize: 12,
           color: Colors.white,
           fontWeight:  FontWeight.bold,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 3.0,
+            ),
+          ],
         ),
       );
     }

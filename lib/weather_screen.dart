@@ -345,6 +345,132 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(
+                                    height: 15.0,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,// 하단 부분
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text('미세먼지 |',
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 12.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black54,
+                                                      offset: Offset(1.0, 1.0),
+                                                      blurRadius: 3.0,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Text('$dust1',
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 12.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black54,
+                                                      offset: Offset(2.0, 2.0),
+                                                      blurRadius: 3.0,
+                                                    ),
+                                                  ],
+
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(' 초미세먼지 |',
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 12.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black54,
+                                                      offset: Offset(1.0, 1.0),
+                                                      blurRadius: 3.0,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Text('$dust2',
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 12.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black54,
+                                                      offset: Offset(2.0, 2.0),
+                                                      blurRadius: 3.0,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(' 대기질지수',
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 12.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black54,
+                                                      offset: Offset(1.0, 1.0),
+                                                      blurRadius: 3.0,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                             airState!,
+
+
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    height: 120,
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff331c71),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: WeeklyWeatherPage(parseWeekData: widget.parseWeekData)
+                                  )
                                 ],
                               )
                             ),
@@ -353,121 +479,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      Divider(
-                        height: 15.0,
-                        thickness: 2.0,
-                        color: Colors.white30,
-                      ),
-                      Row( // 하단 부분
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text('미세먼지',
-                                style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black54,
-                                      offset: Offset(1.0, 1.0),
-                                      blurRadius: 3.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text('$dust1',
-                                style: GoogleFonts.lato(
-                                  fontSize: 24.0,
-                                  color: Colors.white,
-
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text('"㎍/m3"',
-                                style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('초미세먼지',
-                                style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black54,
-                                      offset: Offset(1.0, 1.0),
-                                      blurRadius: 3.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text('$dust2',
-                                style: GoogleFonts.lato(
-                                  fontSize: 24.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text('"㎍/m3"',
-                                style: GoogleFonts.lato(
-                                    fontSize: 14.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('AQI(대기질지수)',
-                                style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black54,
-                                      offset: Offset(1.0, 1.0),
-                                      blurRadius: 3.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              airIcon!,
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              airState!,
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
