@@ -9,31 +9,43 @@ class Model {
       return SvgPicture.asset(
         'svg/climacon-cloud_lightning.svg',
         color: Colors.white,
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
       );
     } else if (condition < 531) {
       return SvgPicture.asset(
         'svg/climacon-cloud_rain.svg',
         color: Colors.white,
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
       );
     } else if (condition <= 600) {
       return SvgPicture.asset(
         'svg/climacon-cloud_snow_alt.svg',
         color: Colors.white,
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
       );
     } else if (condition == 800) {
       return SvgPicture.asset(
         'svg/climacon-sun.svg',
         color: Colors.white,
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
       );
     } else if (condition == 801) {
       return SvgPicture.asset(
         'svg/cloud.svg',
         color: Colors.white,
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
       );
     } else if (condition <= 804) {
       return SvgPicture.asset(
         'svg/climacon-cloud_sun.svg',
         color: Colors.white,
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
       );
     }
   }

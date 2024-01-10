@@ -6,7 +6,7 @@ import 'package:intl/intl.dart'; // 날짜 및 시간
 import './model/model.dart';
 import './calendar/calendar.dart';
 import 'my_location.dart';
-import './weeklyweather/weeklyweather.dart';
+import './weeklyweather/weeklyweatherslide.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherScreen({this.parseWeatherData, this.parseAirPollution, this.parseWeekData, required this.administrativeArea, required this.subLocality}); //생성자
@@ -50,11 +50,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return 0.0; // 온도 목록이 비어 있을 때 기본값
   }
 
-  void navigateToWeeklyWeather() {
+  void navigateToWeeklyWeatherSlide() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => WeeklyWeatherPage(parseWeekData: widget.parseWeekData),
+        builder: (context) => WeeklyWeatherSlidePage(parseWeekData: widget.parseWeekData),
       ),
     );
   }
@@ -226,12 +226,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         Column(
                           children: [
                             GestureDetector(
-                              onTap: () async{
-                                MyLocation myLocation = MyLocation();
-                                await myLocation.getMyCurrentLocation();
-                                String tempAsString = myLocation.getMyCurrentLocation().toString();
-                                navigateToWeeklyWeather();
-                              },
+                              // onTap: () async{
+                              //   MyLocation myLocation = MyLocation();
+                              //   await myLocation.getMyCurrentLocation();
+                              //   String tempAsString = myLocation.getMyCurrentLocation().toString();
+                              //   navigateToWeeklyWeather();
+                              // },
 
                               child: Column(
                                 children: [
@@ -463,13 +463,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                     height: 20,
                                   ),
                                   Container(
-                                    height: 120,
-                                    width: 350,
+                                    height: 150,
+                                    width: 560,
                                     decoration: BoxDecoration(
-                                      color: Color(0xff331c71),
+                                      color: Color.fromRGBO(0, 0, 0, 0.5),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
-                                    child: WeeklyWeatherPage(parseWeekData: widget.parseWeekData)
+                                    child: WeeklyWeatherSlidePage(parseWeekData: widget.parseWeekData)
                                   )
                                 ],
                               )
