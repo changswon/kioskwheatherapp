@@ -2,11 +2,14 @@ import './weather_screen.dart';
 import './my_location.dart';
 import 'package:flutter/material.dart';
 import './network.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 const apikey = 'cd899380ae758ffe95104a6e816f2360'; //openweather api key
+const apikey2 = 'jixEuptEnnkEQf4FBY0igRHkFKJBglfa';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('ko_KR', null);
   runApp(MyApp());
 }
 
@@ -50,12 +53,14 @@ class _LoadingState extends State<Loading> {
       'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
       'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey',
       'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
+      'https://api.windy.com/api/point-forecast/v2?lat=$latitude3&lon=$longitude3&model=gfs&parameters=temp,wind,precip&levels=surface&key=$apikey2',
     );
 
     try {
       var weatherData = await network.getJsonData();
       var airData = await network.getAirData();
       var weekData = await network.getWeekData();
+      var windyData = await network.getwindyData();
 
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {

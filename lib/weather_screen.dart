@@ -7,12 +7,14 @@ import './model/model.dart';
 import './calendar/calendar.dart';
 import 'my_location.dart';
 import './weeklyweather/weeklyweatherslide.dart';
+import './windy/windy.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData, this.parseAirPollution, this.parseWeekData, required this.administrativeArea, required this.subLocality}); //생성자
+  WeatherScreen({this.parseWeatherData, this.parseWindyData, this.parseAirPollution, this.parseWeekData, required this.administrativeArea, required this.subLocality}); //생성자
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
   final dynamic parseWeekData;
+  final dynamic parseWindyData;
   final String administrativeArea; // 추가: 도시 정보
   final String subLocality; // 추가: 구군 정보
 
@@ -145,17 +147,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
           )
         ],
       ),
-      body: Container(
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          height: 1500.0,
+          color: Colors.deepPurpleAccent,// Fixed height
         child: Stack(
           children: [
-            Image.asset(
-              'image/background2.jpeg',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
             Container(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(5.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -463,14 +463,26 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                     height: 20,
                                   ),
                                   Container(
-                                    height: 150,
-                                    width: 560,
+                                    height: 170,
+                                    width: 400,
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(0, 0, 0, 0.5),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: WeeklyWeatherSlidePage(parseWeekData: widget.parseWeekData)
-                                  )
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    height: 500,
+                                    width: 400,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: WindyMapView(),
+                                    ),
                                 ],
                               )
                             ),
@@ -483,6 +495,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
             ),
           ],
+        ),
         ),
       ),
     );
