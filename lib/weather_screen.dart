@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart'; // 날짜 및 시간
 import './model/model.dart';
-import './calendar/calendar.dart';
 import 'my_location.dart';
 import './weeklyweather/weeklyweatherslide.dart';
 import './windy/windy.dart';
+import './misemise/mise.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData, this.parseWindyData, this.parseAirPollution, this.parseWeekData, required this.administrativeArea, required this.subLocality}); //생성자
+  WeatherScreen({this.parseWeatherData, this.parseAirPollution, this.parseWeekData, required this.administrativeArea, required this.subLocality}); //생성자
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
   final dynamic parseWeekData;
-  final dynamic parseWindyData;
   final String administrativeArea; // 추가: 도시 정보
   final String subLocality; // 추가: 구군 정보
 
@@ -61,6 +59,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
+
   @override
   void initState() {
     super.initState();
@@ -88,24 +87,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
       condition = conditionValue;
     });
 
-
     if (weekData != null && weekData is Map && weekData['list'] != null && weekData['list'] is List) {
       temperatures = (weekData['list'] as List<dynamic>)
           .map<int>((item) => (item['main']['temp'] as num).round())
           .map<double>((temp) => temp.toDouble())
           .toList();
-
-      // Print temperatures to the console
-      print('온도: $temperatures');
     } else {
       temperatures = []; // If weekData is null or in an unexpected format, initialize temperatures as an empty list
       print('Week Data is null or has an unexpected format: $weekData');
     }
-
-    //print('Week Data: $weekData');
-    //print(temperatures);
-    //print(temp);
-    //print(cityName);
   }
 
   String getSystemTime() {
@@ -138,11 +128,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           IconButton(
             icon: Icon(Icons.person),
             color: Colors.white,
-            onPressed: (){Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CalendarWeather()),
-            );
-            },
+            onPressed: (){},
             iconSize: 30.0,
           )
         ],
@@ -151,7 +137,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         child: Container(
           width: double.infinity,
           height: 1500.0,
-          color: Colors.deepPurpleAccent,// Fixed height
+          color: Colors.blueAccent,// Fixed height
         child: Stack(
           children: [
             Container(
@@ -203,20 +189,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   },
                                 ),
                                 Text(
-                                  DateFormat(' - EEEE, ').format(date), //포맷 메서드를 이용한 날짜 반영
+                                  '${DateFormat(' - d MMM, yyy').format(date)}${DateFormat(' - EEEE, ').format(date)}', //포맷 메서드를 이용한 날짜 반영
                                   style: GoogleFonts.lato(
                                     fontSize: 16.0,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   )
-                                ),
-                                Text(
-                                  DateFormat('d MMM, yyy').format(date),
-                                    style: GoogleFonts.lato(
-                                        fontSize: 16.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                    )
                                 ),
                               ],
                             ),
@@ -238,7 +216,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   // des 위젯
                                   Text('$des',
                                     style: GoogleFonts.lato(
-                                      fontSize: 16.0,
+                                      fontSize: 20.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       shadows: [
@@ -348,137 +326,39 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   SizedBox(
                                     height: 15.0,
                                   ),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,// 하단 부분
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text('미세먼지 |',
-                                                style: GoogleFonts.lato(
-                                                  fontSize: 12.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  shadows: [
-                                                    Shadow(
-                                                      color: Colors.black54,
-                                                      offset: Offset(1.0, 1.0),
-                                                      blurRadius: 3.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Text('$dust1',
-                                                style: GoogleFonts.lato(
-                                                  fontSize: 12.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  shadows: [
-                                                    Shadow(
-                                                      color: Colors.black54,
-                                                      offset: Offset(2.0, 2.0),
-                                                      blurRadius: 3.0,
-                                                    ),
-                                                  ],
-
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(' 초미세먼지 |',
-                                                style: GoogleFonts.lato(
-                                                  fontSize: 12.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  shadows: [
-                                                    Shadow(
-                                                      color: Colors.black54,
-                                                      offset: Offset(1.0, 1.0),
-                                                      blurRadius: 3.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Text('$dust2',
-                                                style: GoogleFonts.lato(
-                                                  fontSize: 12.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  shadows: [
-                                                    Shadow(
-                                                      color: Colors.black54,
-                                                      offset: Offset(2.0, 2.0),
-                                                      blurRadius: 3.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(' 대기질지수',
-                                                style: GoogleFonts.lato(
-                                                  fontSize: 12.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  shadows: [
-                                                    Shadow(
-                                                      color: Colors.black54,
-                                                      offset: Offset(1.0, 1.0),
-                                                      blurRadius: 3.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                             airState!,
-
-
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
                                   Container(
                                     height: 170,
                                     width: 400,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                                      color: Color.fromRGBO(0, 0, 0, 0.1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: WeeklyWeatherSlidePage(parseWeekData: widget.parseWeekData)
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 5,
                                   ),
                                   Container(
-                                    height: 500,
+                                    height: 100,
                                     width: 400,
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                      child: MiseWidget(
+                                        dust1: dust1.toString(),
+                                        dust2: dust2.toString(),
+                                        airState: airState!,
+                                      ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    height: 320,
+                                    width: 400,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(0, 0, 0, 0.1),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: WindyMapView(),

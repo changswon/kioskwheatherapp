@@ -83,6 +83,7 @@ class Model {
       );
     }
   }
+
   Widget? getAirCondition(int index){
     if(index == 1){
       return Text(
@@ -90,14 +91,6 @@ class Model {
         style: GoogleFonts.lato(
           fontSize: 12,
           color: Colors.white,
-          fontWeight:  FontWeight.bold,
-          shadows: [
-            Shadow(
-              color: Colors.black54,
-              offset: Offset(2.0, 2.0),
-              blurRadius: 3.0,
-            ),
-          ],
         ),
       );
     } else if (index == 2){
@@ -105,14 +98,6 @@ class Model {
           style: GoogleFonts.lato(
           fontSize: 12,
           color: Colors.white,
-          fontWeight:  FontWeight.bold,
-            shadows: [
-              Shadow(
-                color: Colors.black54,
-                offset: Offset(2.0, 2.0),
-                blurRadius: 3.0,
-              ),
-            ],
         ),
       );
     } else if (index == 3){
@@ -121,14 +106,6 @@ class Model {
         style: GoogleFonts.lato(
           fontSize: 12,
           color: Colors.white,
-          fontWeight:  FontWeight.bold,
-          shadows: [
-            Shadow(
-              color: Colors.black54,
-              offset: Offset(2.0, 2.0),
-              blurRadius: 3.0,
-            ),
-          ],
         ),
       );
     } else if (index == 4){
@@ -137,14 +114,6 @@ class Model {
         style: GoogleFonts.lato(
           fontSize: 12,
           color: Colors.white,
-          fontWeight:  FontWeight.bold,
-          shadows: [
-            Shadow(
-              color: Colors.black54,
-              offset: Offset(2.0, 2.0),
-              blurRadius: 3.0,
-            ),
-          ],
         ),
       );
     }else if (index == 5){
@@ -153,14 +122,6 @@ class Model {
         style: GoogleFonts.lato(
           fontSize: 12,
           color: Colors.white,
-          fontWeight:  FontWeight.bold,
-          shadows: [
-            Shadow(
-              color: Colors.black54,
-              offset: Offset(2.0, 2.0),
-              blurRadius: 3.0,
-            ),
-          ],
         ),
       );
     }
