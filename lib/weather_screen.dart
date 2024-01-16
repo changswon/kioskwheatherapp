@@ -7,9 +7,16 @@ import 'my_location.dart';
 import './weeklyweather/weeklyweatherslide.dart';
 import './windy/windy.dart';
 import './misemise/mise.dart';
+import './background/backgroundcolorchanger.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData, this.parseAirPollution, this.parseWeekData, required this.administrativeArea, required this.subLocality}); //생성자
+  WeatherScreen({
+    this.parseWeatherData,
+    this.parseAirPollution,
+    this.parseWeekData,
+    required this.administrativeArea,
+    required this.subLocality});
+  //생성자
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
   final dynamic parseWeekData;
@@ -137,9 +144,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
         child: Container(
           width: double.infinity,
           height: 1500.0,
-          color: Colors.blueAccent,// Fixed height
         child: Stack(
           children: [
+            BackgroundColorChanger(), //background 시간 설정에 의한 컬러변경 위젯
             Container(
               padding: EdgeInsets.all(5.0),
               child: Column(

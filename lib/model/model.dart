@@ -84,8 +84,8 @@ class Model {
     }
   }
 
-  Widget? getAirCondition(int index){
-    if(index == 1){
+  Widget? getAirCondition(int index) {
+    if (index == 1) {
       return Text(
         '매우좋음',
         style: GoogleFonts.lato(
@@ -93,14 +93,14 @@ class Model {
           color: Colors.white,
         ),
       );
-    } else if (index == 2){
+    } else if (index == 2) {
       return Text('좋음',
-          style: GoogleFonts.lato(
+        style: GoogleFonts.lato(
           fontSize: 12,
           color: Colors.white,
         ),
       );
-    } else if (index == 3){
+    } else if (index == 3) {
       return Text(
         '보통',
         style: GoogleFonts.lato(
@@ -108,7 +108,7 @@ class Model {
           color: Colors.white,
         ),
       );
-    } else if (index == 4){
+    } else if (index == 4) {
       return Text(
         '나쁨',
         style: GoogleFonts.lato(
@@ -116,7 +116,7 @@ class Model {
           color: Colors.white,
         ),
       );
-    }else if (index == 5){
+    } else if (index == 5) {
       return Text(
         '매우나쁨',
         style: GoogleFonts.lato(
