@@ -8,6 +8,7 @@ import './weeklyweather/weeklyweatherslide.dart';
 import './windy/windy.dart';
 import './misemise/mise.dart';
 import './background/backgroundcolorchanger.dart';
+import './windspeed/windspeed.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherScreen({
@@ -33,6 +34,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Model model = Model();
   late String cityName;
   late int temp;
+  late double windspeed;
+  late double windgust;
   Widget? icon;
   late String des;
   Widget? airIcon;
@@ -81,6 +84,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     des = weatherData['weather'][0]['description'];
     dust1 = airData['list'][0]['components']['pm10'];
     dust2 = airData['list'][0]['components']['pm2_5'];
+    windgust = (weatherData['wind']['gust'] ?? 0.0).toDouble();
+    windspeed = (weatherData['wind']['speed'] ?? 0.0).toDouble();
     temp = temp2.round();
     icon = model.getWeatherIcon(condition);
     airIcon = model.getAirIcon(index);
@@ -346,7 +351,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                     height: 5,
                                   ),
                                   Container(
-                                    height: 100,
+                                    height: 110,
                                     width: 400,
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -370,6 +375,38 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                     ),
                                     child: WindyMapView(),
                                     ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: WindSpeedPage(
+                                            windspeed.toStringAsFixed(1), // AsFixed 소수점 1 자리로 넘김
+                                            windgust.toStringAsFixed(1),
+                                          ), // 왼쪽 Container에 표시할 내용
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0, // 원하는 간격 크기 설정
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               )
                             ),

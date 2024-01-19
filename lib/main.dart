@@ -53,12 +53,14 @@ class _LoadingState extends State<Loading> {
       'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
       'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey',
       'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
+      'https://api.openweathermap.org/data/3.0/onecall?lat=$latitude3&lon=$longitude3&exclude=hourly,daily&appid=$apikey',
     );
 
     try {
       var weatherData = await network.getJsonData();
       var airData = await network.getAirData();
       var weekData = await network.getWeekData();
+      var uvData = await network.getUvData();
 
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {

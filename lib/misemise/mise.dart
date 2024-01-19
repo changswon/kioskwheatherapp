@@ -4,13 +4,11 @@ import '../model/model.dart';
 
 class MiseWidget extends StatelessWidget {
   final String dust1;
-  final dynamic airData;
   final String dust2;
   final Widget airState;
 
   MiseWidget({
     required this.dust1,
-    this.airData,
     required this.dust2,
     required this.airState,
   });
