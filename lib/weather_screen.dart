@@ -86,7 +86,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     dust2 = airData['list'][0]['components']['pm2_5'];
     windgust = (weatherData['wind']['gust'] ?? 0.0).toDouble();
     windspeed = (weatherData['wind']['speed'] ?? 0.0).toDouble();
-    temp = temp2.round();
+    temp = temp2.round(); //소수점 없애기
     icon = model.getWeatherIcon(condition);
     airIcon = model.getAirIcon(index);
     airState = model.getAirCondition(index);
