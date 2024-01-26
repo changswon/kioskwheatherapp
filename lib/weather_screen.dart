@@ -7,17 +7,24 @@ import 'my_location.dart';
 import './weeklyweather/weeklyweatherslide.dart';
 import './windy/windy.dart';
 import './misemise/mise.dart';
-import './background/backgroundcolorchanger.dart';
+import './background/BackgroundImageChanger.dart';
 import './windspeed/windspeed.dart';
+import './humidity/humidity.dart';
+import './pop/pop.dart';
+import './visibility/visibility.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherScreen({
+
     this.parseWeatherData,
     this.parseAirPollution,
     this.parseWeekData,
+    this.parseOneCallData,
     required this.administrativeArea,
     required this.subLocality});
   //생성자
+
+  final dynamic parseOneCallData;
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
   final dynamic parseWeekData;
@@ -36,6 +43,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   late int temp;
   late double windspeed;
   late double windgust;
+  late int humidity;
   Widget? icon;
   late String des;
   Widget? airIcon;
@@ -45,6 +53,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   var date = DateTime.now(); // 서버의 날짜를 가져오는 변수
   List<double> temperatures = [];
   late int condition;
+  late int pop;
+  late int visibility;
 
   double getMaxTemperature() {
     if (temperatures.isNotEmpty) {
@@ -73,10 +83,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   void initState() {
     super.initState();
-    updateData(widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.administrativeArea, widget.subLocality);
+    updateData( widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.administrativeArea, widget.subLocality);
   }
 
-  void updateData(dynamic weatherData, dynamic airData, dynamic weekData, String administrativeArea, String subLocality) {
+  void updateData( dynamic weatherData, dynamic airData, dynamic weekData, String administrativeArea, String subLocality) {
     dynamic tempValue = weatherData['main']['temp'];
     double temp2 = tempValue is int ? tempValue.toDouble() : tempValue;
     condition = weatherData['weather'][0]['id'];
@@ -86,6 +96,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
     dust2 = airData['list'][0]['components']['pm2_5'];
     windgust = (weatherData['wind']['gust'] ?? 0.0).toDouble();
     windspeed = (weatherData['wind']['speed'] ?? 0.0).toDouble();
+    humidity = weatherData['main']['humidity'];
+    pop = weatherData['pop'] ?? 0;
+    visibility = weatherData['visibility'] ?? 0;
     temp = temp2.round(); //소수점 없애기
     icon = model.getWeatherIcon(condition);
     airIcon = model.getAirIcon(index);
@@ -93,6 +106,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     setState(() {
       cityName = '$administrativeArea  $subLocality';
     });
+
+
 
     int conditionValue = weatherData['weather'][0]['id'];
     setState(() {
@@ -109,12 +124,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
       print('Week Data is null or has an unexpected format: $weekData');
     }
   }
-
-  String getSystemTime() {
-    var now = DateTime.now();
-    return DateFormat("h:mm a").format(now); // AM 기준
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -148,10 +157,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          height: 1500.0,
+          height: 1900.0,
         child: Stack(
           children: [
-            BackgroundColorChanger(), //background 시간 설정에 의한 컬러변경 위젯
+            BackgroundImageChanger(), //background 시간 설정에 의한 컬러변경 위젯
             Container(
               padding: EdgeInsets.all(5.0),
               child: Column(
@@ -186,22 +195,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                TimerBuilder.periodic(
-                                  (Duration(minutes: 1)),
-                                  builder:(context){
-                                    //print('${getSystemTime()}',); //로그에 시간 현재시간 출력
-                                    return Text(
-                                      '${getSystemTime()}',
-                                      style: GoogleFonts.lato(
-                                          fontSize: 16.0,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                                  },
-                                ),
                                 Text(
-                                  '${DateFormat(' - d MMM, yyy').format(date)}${DateFormat(' - EEEE, ').format(date)}', //포맷 메서드를 이용한 날짜 반영
+                                  '${DateFormat('yyyy년 MM월 d일 EEEE', 'ko').format(date)}', //포맷 메서드를 이용한 날짜 반영
                                   style: GoogleFonts.lato(
                                     fontSize: 16.0,
                                     color: Colors.white,
@@ -402,11 +397,49 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           decoration: BoxDecoration(
                                             color: Color.fromRGBO(0, 0, 0, 0.1),
                                             borderRadius: BorderRadius.circular(16),
+                                            ),
+                                            child: HumidityPage(
+                                                humidity.toString(),
+                                                temp.toString(),
                                           ),
                                         ),
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: PopPage(
+                                            pop.toString(), // AsFixed 소수점 1 자리로 넘김
+                                          ), // 왼쪽 Container에 표시할 내용
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0, // 원하는 간격 크기 설정
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: VisibilityPage(
+                                            visibility.toString(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               )
                             ),

@@ -3,6 +3,8 @@ import './my_location.dart';
 import 'package:flutter/material.dart';
 import './network.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'model/model.dart';
 
 const apikey = 'cd899380ae758ffe95104a6e816f2360'; //openweather api key
 
@@ -49,19 +51,16 @@ class _LoadingState extends State<Loading> {
     administrativeArea = myLocation.administrativeArea;
     subLocality = myLocation.subLocality;
 
+
     Network network = Network(
-      'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
+      'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&lang=kr&appid=$apikey&units=metric',
       'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey',
       'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
-      'https://api.openweathermap.org/data/3.0/onecall?lat=$latitude3&lon=$longitude3&exclude=hourly,daily&appid=$apikey',
     );
-
     try {
       var weatherData = await network.getJsonData();
       var airData = await network.getAirData();
       var weekData = await network.getWeekData();
-      var uvData = await network.getUvData();
-
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
         return WeatherScreen(
@@ -86,14 +85,16 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Weather App'),
-      ),
+      appBar: AppBar(),
+      backgroundColor: Colors.white,
       body: Center(
-        child: ElevatedButton(
-          onPressed: isLoading ? null : () {},
-          child: Text(isLoading ? 'Loading' : 'Start'),
-        ),
+
+      child: Image.asset(
+      'assets/무지개.gif', // GIF 파일의 경로 지정
+      width: 200.0,           // 로딩 인디게이터의 가로 크기
+      height: 200.0,
+
+    ),
       ),
     );
   }

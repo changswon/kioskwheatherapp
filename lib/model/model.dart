@@ -50,6 +50,46 @@ class Model {
     }
   }
 
+  Widget? getWeatherGif(int condition) {
+    if (condition < 300) {
+      return Image.asset(
+        'assets/번개.gif',
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
+      );
+    } else if (condition < 531) {
+      return Image.asset(
+        'assets/비.gif',
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
+      );
+    } else if (condition <= 600) {
+      return Image.asset(
+        'assets/눈.gif',
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
+      );
+    } else if (condition == 800) {
+      return Image.asset(
+        'assets/맑음.gif',
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
+      );
+    } else if (condition == 801) {
+      return Image.asset(
+        'assets/구름.gif',
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
+      );
+    } else if (condition <= 804) {
+      return Image.asset(
+        'assets/흐림뒤맑음.gif',
+        width: 50.0, // 아이콘의 가로 크기 조절
+        height: 50.0, // 아이콘의 세로 크기 조절
+      );
+    }
+  }
+
   Widget? getAirIcon(int index) {
     if (index == 1) {
       return Image.asset(
