@@ -76,7 +76,7 @@ class VisibilityPage extends StatelessWidget {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          "가시거리는 \n${getVisibilityMessage(visibilityInKilometers)}",
+                          "가시거리가 \n${getVisibilityMessage(visibilityInKilometers)}",
                           style: GoogleFonts.lato(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,

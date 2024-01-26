@@ -19,12 +19,9 @@ class WeatherScreen extends StatefulWidget {
     this.parseWeatherData,
     this.parseAirPollution,
     this.parseWeekData,
-    this.parseOneCallData,
     required this.administrativeArea,
     required this.subLocality});
   //생성자
-
-  final dynamic parseOneCallData;
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
   final dynamic parseWeekData;
@@ -68,6 +65,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
       return temperatures.reduce((min, temp) => temp < min ? temp : min).toDouble();
     }
     return 0.0; // 온도 목록이 비어 있을 때 기본값
+  }
+
+  void refreshWeather(){
+    updateData(
+      widget.parseWeatherData,
+      widget.parseAirPollution,
+      widget.parseWeekData,
+      widget.administrativeArea,
+      widget.subLocality,
+    );
   }
 
   void navigateToWeeklyWeatherSlide() {
@@ -147,9 +154,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.update),
             color: Colors.white,
-            onPressed: (){},
+            onPressed: (){
+              refreshWeather();
+            },
             iconSize: 30.0,
           )
         ],
