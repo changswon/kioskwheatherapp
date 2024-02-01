@@ -7,7 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'model/model.dart';
 
 const apikey = 'cd899380ae758ffe95104a6e816f2360'; //openweather api key
-
+const apiuvkey = 'openuv-rupcfgrls2qe4vv-io';
+var nowDate = DateTime.now().toString();
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ class _LoadingState extends State<Loading> {
   late String subLocality;
   bool isLoading = true;
 
+
   @override
   void initState() {
     super.initState();
@@ -56,14 +58,20 @@ class _LoadingState extends State<Loading> {
       'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&lang=kr&appid=$apikey&units=metric',
       'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey',
       'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
+      'https://api.openuv.io/api/v1/uv?lat=$latitude3&lng=$longitude3&dt=$nowDate',
     );
     try {
       var weatherData = await network.getJsonData();
       var airData = await network.getAirData();
       var weekData = await network.getWeekData();
+      var uvData = await network.getUvData();
+
+      print("Weatherdata: $weatherData");
+
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
         return WeatherScreen(
+          parseUvData: uvData,
           parseWeatherData: weatherData,
           parseAirPollution: airData,
           parseWeekData: weekData,

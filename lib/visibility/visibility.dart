@@ -64,7 +64,7 @@ class VisibilityPage extends StatelessWidget {
                   Text(
                     '${visibilityInKilometers.round()} km',
                     style: GoogleFonts.lato(
-                      fontSize: 25.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -79,7 +79,6 @@ class VisibilityPage extends StatelessWidget {
                           "가시거리가 \n${getVisibilityMessage(visibilityInKilometers)}",
                           style: GoogleFonts.lato(
                             fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),// 아래 중앙 정렬

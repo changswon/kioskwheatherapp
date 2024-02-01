@@ -65,7 +65,7 @@ class WindSpeedPage extends StatelessWidget {
                   Text(
                     '바람 $windspeed m/s',
                     style: GoogleFonts.lato(
-                      fontSize: 25.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -74,9 +74,8 @@ class WindSpeedPage extends StatelessWidget {
                   Divider( // 수평 선 추가
                     color: Colors.white.withOpacity(0.5),
                     thickness: 1.0, // 선의 두께 설정
-                    height: 20.0, // 선의 높이 설정 (세로 간격)
+                    height: 50.0, // 선의 높이 설정 (세로 간격)
                   ),
-                  SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -85,7 +84,7 @@ class WindSpeedPage extends StatelessWidget {
                         child: Text(
                           '${getWindSpeedDescription(double.parse(windspeed))} $windgust m/s',
                           style: GoogleFonts.lato(
-                            fontSize: 25.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),

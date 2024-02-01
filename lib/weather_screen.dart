@@ -12,16 +12,20 @@ import './windspeed/windspeed.dart';
 import './humidity/humidity.dart';
 import './pop/pop.dart';
 import './visibility/visibility.dart';
+import './sunrisesunset/sunrisesunset.dart';
+import './uv/uv.dart';
+import './feeltemp/feeltemp.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherScreen({
-
+    this.parseUvData,
     this.parseWeatherData,
     this.parseAirPollution,
     this.parseWeekData,
     required this.administrativeArea,
     required this.subLocality});
   //생성자
+  final dynamic parseUvData;
   final dynamic parseWeatherData;
   final dynamic parseAirPollution;
   final dynamic parseWeekData;
@@ -50,8 +54,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
   var date = DateTime.now(); // 서버의 날짜를 가져오는 변수
   List<double> temperatures = [];
   late int condition;
-  late int pop;
+  late double pop;
+  late double rain;
   late int visibility;
+  late int sunrise;
+  late int sunset;
+  late double uvmax;
+  late double feeltemp;
+  late int pressure;
+
 
   double getMaxTemperature() {
     if (temperatures.isNotEmpty) {
@@ -69,6 +80,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   void refreshWeather(){
     updateData(
+      widget.parseUvData,
       widget.parseWeatherData,
       widget.parseAirPollution,
       widget.parseWeekData,
@@ -90,38 +102,41 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   void initState() {
     super.initState();
-    updateData( widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.administrativeArea, widget.subLocality);
+    updateData( widget.parseUvData, widget.parseWeatherData, widget.parseAirPollution, widget.parseWeekData, widget.administrativeArea, widget.subLocality);
   }
 
-  void updateData( dynamic weatherData, dynamic airData, dynamic weekData, String administrativeArea, String subLocality) {
+  void updateData( dynamic uvData, dynamic weatherData, dynamic airData, dynamic weekData, String administrativeArea, String subLocality) {
     dynamic tempValue = weatherData['main']['temp'];
     double temp2 = tempValue is int ? tempValue.toDouble() : tempValue;
     condition = weatherData['weather'][0]['id'];
+    feeltemp = weatherData['main']['feels_like'];
     int index = airData['list'][0]['main']['aqi'];
     des = weatherData['weather'][0]['description'];
-    dust1 = airData['list'][0]['components']['pm10'];
-    dust2 = airData['list'][0]['components']['pm2_5'];
-    windgust = (weatherData['wind']['gust'] ?? 0.0).toDouble();
-    windspeed = (weatherData['wind']['speed'] ?? 0.0).toDouble();
+    dust1 = (airData['list'][0]['components']['pm10'] ?? 0).toDouble();
+    dust2 = (airData['list'][0]['components']['pm2_5'] ?? 0).toDouble();
+    windgust = (weatherData['wind']['gust'] ?? 0).toDouble();
+    windspeed = (weatherData['wind']['speed'] ?? 0).toDouble();
     humidity = weatherData['main']['humidity'];
-    pop = weatherData['pop'] ?? 0;
+    pop = (weekData['list'][0]['pop'] ?? 0).toDouble();
+    rain = (weekData['list'][0]['rain']['3h']?? 0).toDouble();
     visibility = weatherData['visibility'] ?? 0;
+    sunrise = weatherData['sys']['sunrise'] ?? 0;
+    sunset = weatherData['sys']['sunset'] ?? 0;
     temp = temp2.round(); //소수점 없애기
     icon = model.getWeatherIcon(condition);
     airIcon = model.getAirIcon(index);
     airState = model.getAirCondition(index);
+    uvmax = (uvData['result']['uv_max']?? 0).toDouble();
+    pressure = weatherData['main']['pressure']?? 0;
+
     setState(() {
       cityName = '$administrativeArea  $subLocality';
     });
-
-
-
     int conditionValue = weatherData['weather'][0]['id'];
     setState(() {
       condition = conditionValue;
     });
-
-    if (weekData != null && weekData is Map && weekData['list'] != null && weekData['list'] is List) {
+      if (weekData != null && weekData is Map && weekData['list'] != null && weekData['list'] is List) {
       temperatures = (weekData['list'] as List<dynamic>)
           .map<int>((item) => (item['main']['temp'] as num).round())
           .map<double>((temp) => temp.toDouble())
@@ -344,7 +359,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   ),
                                   Container(
                                     height: 170,
-                                    width: 400,
+                                    //width: 400,
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(0, 0, 0, 0.1),
                                       borderRadius: BorderRadius.circular(16),
@@ -356,7 +371,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   ),
                                   Container(
                                     height: 110,
-                                    width: 400,
+                                    //width: 400,
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(0, 0, 0, 0.1),
                                       borderRadius: BorderRadius.circular(16),
@@ -372,7 +387,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   ),
                                   Container(
                                     height: 320,
-                                    width: 400,
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(0, 0, 0, 0.1),
                                       borderRadius: BorderRadius.circular(16),
@@ -406,10 +420,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           decoration: BoxDecoration(
                                             color: Color.fromRGBO(0, 0, 0, 0.1),
                                             borderRadius: BorderRadius.circular(16),
-                                            ),
-                                            child: HumidityPage(
-                                                humidity.toString(),
-                                                temp.toString(),
+                                          ),
+                                          child: PopPage(
+                                            pop.toString(),
+                                            rain.toStringAsFixed(1),
                                           ),
                                         ),
                                       ),
@@ -427,8 +441,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                             color: Color.fromRGBO(0, 0, 0, 0.1),
                                             borderRadius: BorderRadius.circular(16),
                                           ),
-                                          child: PopPage(
-                                            pop.toString(), // AsFixed 소수점 1 자리로 넘김
+                                          child: HumidityPage(
+                                            humidity.toString(),
+                                            temp.toString(),
                                           ), // 왼쪽 Container에 표시할 내용
                                         ),
                                       ),
@@ -444,6 +459,55 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           ),
                                           child: VisibilityPage(
                                             visibility.toString(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    height: 260,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: SunrisesunsetPage(
+                                      sunrise.toInt(),
+                                      sunset.toInt(),
+                                      ),
+                                    ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 210,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: uvPage(
+                                            uvmax.toStringAsFixed(1), // AsFixed 소수점 1 자리로 넘김
+                                          ), // 왼쪽 Container에 표시할 내용
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0, // 원하는 간격 크기 설정
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 210,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: FeeltempPage(
+                                            feeltemp.toStringAsFixed(1),
+                                            pressure.toInt(),
                                           ),
                                         ),
                                       ),
